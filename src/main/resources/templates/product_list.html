@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit">
+    <title>商品列表</title>
+    <link rel="stylesheet" href="/css/pintuer.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="/js/jquery.js"></script>
+    <script src="/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 商品列表</strong></div>
+    <div class="padding border-bottom">
+        <a class="button border-yellow" href="/product/add"><span class="icon-plus-square-o"></span> 添加商品</a>
+    </div>
+    <table class="table table-hover text-center">
+        <tr>
+            <th width="5%">ID</th>
+            <th>商品名称</th>
+            <th>价格</th>
+            <th>库存</th>
+            <th>是否展示</th>
+            <th>创建时间</th>
+            <th width="250">操作</th>
+        </tr>
+
+        <tr th:each="product:${productList}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.stock}"></td>
+            <td th:switch="${product.isShow}">
+                <span th:case="0">否</span>
+                <span th:case="1">是</span>
+            </td>
+            <td th:text="  ${#dates.format(product.createTime, 'yyyy/MM/dd HH:mm:ss')}"></td>
+            <td>
+
+
+                <div class="button-group" th:switch="${product.isShow}">
+                    <a th:case="0" type="button" class="button border-green"
+                       th:href="@{'/product/show/'+${product.id}+'/1'}"><span
+                            class="icon"></span>显示</a>
+                    <a th:case="1" type="button" class="button border-blue"
+                       th:href="@{'/product/show/'+${product.id}+'/0'}"><span
+                            class="icon"></span>不显示</a>
+                </div>
+                <div class="button-group">
+                    <a type="button" class="button border-main" th:href="@{'/product/update/'+${product.id}}"><span
+                            class="icon-edit"></span>修改</a>
+                    <a class="button border-red" href="javascript:void(0)"
+                       th:onclick="javascript:del([[${product.id}]])"><span
+                            class="icon-trash-o"></span> 删除</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    function del(id) {
+        if (confirm("您确定要删除吗?")) {
+            window.location.href = "/product/delete/" + id;
+        }
+    }
+</script>
+</body>
+</html>

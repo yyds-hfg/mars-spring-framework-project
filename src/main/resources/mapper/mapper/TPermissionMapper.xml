@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hacker.mars.infrastructure.persistent.mapper.TPermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hacker.mars.infrastructure.persistent.po.TPermissionPo">
+        <id column="ID" property="id" />
+        <result column="permission_name" property="permissionName" />
+        <result column="permission_tag" property="permissionTag" />
+        <result column="permission_url" property="permissionUrl" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, permission_name, permission_tag, permission_url
+    </sql>
+
+</mapper>
