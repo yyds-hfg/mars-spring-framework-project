@@ -4,6 +4,30 @@ server:
 spring:
   application:
     name: mars-application
+  thymeleaf:
+    prefix: classpath:/templates/  #视图解析器的前缀放在这个文件夹
+    suffix: .html
+    mode: LEGACYHTML5
+    servlet:
+      content-type: text/html
+    encoding: UTF-8
+    cache: false  #不用缓存
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+  datasource:
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/security_management
+  security:
+    user:
+      name: user   #设置SpringSecurity框架的默认密码
+      password: user
+      roles: ADMIN
 
 knife4j:
   enable: true
