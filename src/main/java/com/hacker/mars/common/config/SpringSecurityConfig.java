@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 /**
  * <p>
- *  SpringSecurity配置类
+ * SpringSecurity配置类
  * </p>
  *
  * @author: 韩福贵
@@ -23,9 +23,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         //忽略静态资源被拦截的问题
-        web.ignoring().antMatchers("/css/**","/js/**","/images/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**");
     }
 
     @Override
@@ -35,14 +35,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //这种把用户名,密码通过md5加密然后进行传输,生成不建议使用
 
         http.formLogin() //开启表单验证
-                .loginPage("/toLoginPage")  //LoginController的方法
+                .loginPage("/toLoginPage")  //LoginController的方法 自定义登录页面
                 .loginProcessingUrl("/login") //表单提交的路径
                 .usernameParameter("username")
                 .passwordParameter("password") //待提交密码的input值
                 .successForwardUrl("/")  //登录成功之后跳转的路径
                 .and().authorizeRequests().antMatchers("/toLoginPage").permitAll().anyRequest().authenticated();
+
         //关闭csrf防护
         http.csrf().disable();
+
+        // 加载同源域名下的iframe页面,允许iframe加载页面
+        http.headers().frameOptions().sameOrigin();
     }
 
 }

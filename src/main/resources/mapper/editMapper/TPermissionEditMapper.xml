@@ -2,4 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hacker.mars.infrastructure.persistent.mapper.TPermissionMapper">
 
+    <select id="findByUserId" resultType="com.hacker.mars.infrastructure.persistent.po.TPermissionPo">
+        SELECT p.*
+        FROM t_permission p,
+             t_role_permission rp,
+             t_role r,
+             t_user_role ur,
+             t_user u
+        WHERE p.id = rp.PID
+          AND rp.RID = r.id
+          AND r.id = ur.RID
+          AND ur.UID = u.id
+          AND u.id = #{id}
+    </select>
+
 </mapper>
