@@ -3,7 +3,6 @@ package com.hacker.mars.domain.user;
 import com.hacker.mars.infrastructure.persistent.mapper.TUserMapper;
 import com.hacker.mars.infrastructure.persistent.po.TUserPo;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 /**

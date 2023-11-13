@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hacker.mars.infrastructure.persistent.mapper.PersistentLoginsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hacker.mars.infrastructure.persistent.po.PersistentLoginsPo">
+        <id column="series" property="series" />
+        <result column="username" property="username" />
+        <result column="token" property="token" />
+        <result column="last_used" property="lastUsed" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        username, series, token, last_used
+    </sql>
+
+</mapper>

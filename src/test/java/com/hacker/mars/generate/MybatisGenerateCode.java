@@ -26,9 +26,10 @@ public class MybatisGenerateCode {
     public static String projectPath = "E:\\编程知识库\\work-code\\mars-spring-framework-project";
 
     public static String[] tableName = new String[]{
-            "t_permission",
-            "t_product",
-            "t_user"
+//            "t_permission",
+//            "t_product",
+//            "t_user",
+            "persistent_logins"
     };
 
     public static void main(String[] args) {

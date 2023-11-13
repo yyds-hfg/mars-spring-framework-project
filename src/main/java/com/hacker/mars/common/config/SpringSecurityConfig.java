@@ -1,12 +1,16 @@
 package com.hacker.mars.common.config;
 
+import com.hacker.mars.common.security.MarsPersistentTokenRepository;
 import com.hacker.mars.common.security.MarsUserDetailsService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 /**
  * <p>
@@ -52,7 +56,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 加载同源域名下的iframe页面,允许iframe加载页面
         http.headers().frameOptions().sameOrigin();
+
+        //简单token记住我功能
+        //开启记住我功能,设置过期时间,默认是两周,自定义表单input值
+        http.rememberMe().tokenValiditySeconds(1209600).rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository);
     }
+
+    @Autowired
+    private MarsPersistentTokenRepository persistentTokenRepository;
 
 }
 

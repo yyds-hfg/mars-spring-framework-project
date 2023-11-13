@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hacker.mars.infrastructure.persistent.mapper.PersistentLoginsMapper">
+
+    <insert id="createNewToken">
+        insert into persistent_logins (username, series, token, last_used)
+        values (#{username}, #{series}, #{tokenValue}, #{localDateTime})
+    </insert>
+
+    <update id="updateToken">
+        update persistent_logins
+        set token     = #{token},
+            last_used = #{localDateTime}
+        where series = #{series}
+    </update>
+    <delete id="removeUserTokens">
+        delete from persistent_logins where username = #{username}
+    </delete>
+    <select id="tokensBySeries" resultType="com.hacker.mars.infrastructure.persistent.po.PersistentLoginsPo">
+        select username,series,token,last_used from persistent_logins where series = #{seriesId}
+    </select>
+
+</mapper>
