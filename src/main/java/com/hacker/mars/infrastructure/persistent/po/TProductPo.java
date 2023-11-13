@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -70,7 +72,7 @@ public class TProductPo implements Serializable {
      */
     @ApiModelProperty("创建时间")
     @TableField("create_time")
-    private LocalDateTime createTime;
+    private Date createTime;
 
 
     /**

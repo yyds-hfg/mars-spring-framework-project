@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,7 +75,7 @@ public class ProductApi {
         // 主键不为空执行修改,为空执行保存
         if (product.getId() == null) {
             product.setIsShow(0);//设置是否展示 0 - 默认不展示
-            product.setCreateTime(LocalDateTime.now());
+            product.setCreateTime(new Date());
             productMapper.insert(product);
         }
         productMapper.updateById(product);

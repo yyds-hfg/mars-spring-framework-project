@@ -1,5 +1,7 @@
 package com.hacker.mars.common.config;
 
+import com.hacker.mars.common.security.MarsUserDetailsService;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,11 +17,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * @date: 2023-11-12
  */
 @Configuration
+@AllArgsConstructor
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final MarsUserDetailsService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override

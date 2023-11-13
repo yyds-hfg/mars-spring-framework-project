@@ -1,7 +1,6 @@
 package com.hacker.mars.application.api.user;
 
 import com.hacker.mars.domain.user.entity.ImageCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,7 +51,7 @@ public class ValidateCodeApi {
     /**
      * 用于生成验证码对象
      *
-     * @return
+     * @return 验证码对象
      */
     private ImageCode createImageCode() {
 
@@ -94,9 +93,9 @@ public class ValidateCodeApi {
     /**
      * 获取随机演示
      *
-     * @param fc
-     * @param bc
-     * @return
+     * @param fc fc
+     * @param bc bc
+     * @return Color
      */
     private Color getRandColor(int fc, int bc) {
         Random random = new Random();
