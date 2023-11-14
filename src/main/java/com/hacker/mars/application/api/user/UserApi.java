@@ -2,6 +2,10 @@ package com.hacker.mars.application.api.user;
 
 import com.hacker.mars.infrastructure.persistent.mapper.TUserMapper;
 import com.hacker.mars.infrastructure.persistent.po.TUserPo;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -116,6 +120,12 @@ public class UserApi {
     @GetMapping("/{id}")
     @ResponseBody
     public TUserPo getById(@PathVariable Integer id) {
+        //获取认证信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //如果返回是True,代表登录来源于自动登录
+        if (RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
+            throw new RememberMeAuthenticationException("认证来源于RememberMe!");
+        }
         return userMapper.selectById(id);
     }
 

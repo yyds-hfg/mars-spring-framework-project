@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.hacker.mars.infrastructure.persistent.mapper.PersistentLoginsMapper;
 import com.hacker.mars.infrastructure.persistent.po.PersistentLoginsPo;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MarsPersistentTokenRepository implements PersistentTokenRepository {
 
     private final PersistentLoginsMapper persistentLoginsMapper;

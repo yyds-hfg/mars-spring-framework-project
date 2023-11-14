@@ -39,7 +39,8 @@
                         </div>
                         <div class="form-group">
                             <div class="field">
-                                <input type="text" class="input input-big" name="imageCode" placeholder="填写右侧的验证码"
+                                <input type="text" class="input input-big" name="imageCode"
+                                       placeholder="填写右侧的验证码"
                                        data-validate="required:请填写右侧的验证码"/>
                                 <img src="" alt="" width="100" height="32" class="passcode"
                                      style="height:43px;cursor:pointer;" onclick="this.src=this.src+'?'">
@@ -54,8 +55,7 @@
                         </div>
                     </div>
                     <div style="padding:30px;">
-                        <input type="submit"
-                               class="button button-block bg-main text-big input-big" value="登录">
+                        <input type="button" class="button button-block bg-main text-big input-big" value="登录">
                     </div>
                 </div>
             </form>
@@ -64,3 +64,22 @@
 </div>
 </body>
 </html>
+
+<script>
+    function login() {
+        $.ajax({
+            type: "POST",//方法类型
+            dataType: "json",//服务器预期返回类型
+            url: "/login", // 登录url
+            data: $("#formLogin").serialize(),
+            success: function (data) {
+                console.log(data)
+                if (data.code === 200) {
+                    window.location.href = "/";
+                } else {
+                    alert(data.message);
+                }
+            }
+        });
+    }
+</script>

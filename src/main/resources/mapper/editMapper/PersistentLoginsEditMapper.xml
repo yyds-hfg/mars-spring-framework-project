@@ -9,15 +9,21 @@
 
     <update id="updateToken">
         update persistent_logins
-        set token     = #{token},
+        set token     = #{tokenValue},
             last_used = #{localDateTime}
         where series = #{series}
     </update>
+
     <delete id="removeUserTokens">
-        delete from persistent_logins where username = #{username}
+        delete
+        from persistent_logins
+        where username = #{username}
     </delete>
+
     <select id="tokensBySeries" resultType="com.hacker.mars.infrastructure.persistent.po.PersistentLoginsPo">
-        select username,series,token,last_used from persistent_logins where series = #{seriesId}
+        select username, series, token, last_used
+        from persistent_logins
+        where series = #{seriesId}
     </select>
 
 </mapper>

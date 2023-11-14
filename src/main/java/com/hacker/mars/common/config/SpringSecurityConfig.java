@@ -1,16 +1,14 @@
 package com.hacker.mars.common.config;
 
+import com.hacker.mars.common.security.MarsAuthenticationSuccessHandler;
 import com.hacker.mars.common.security.MarsPersistentTokenRepository;
 import com.hacker.mars.common.security.MarsUserDetailsService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 /**
  * <p>
@@ -21,10 +19,14 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
  * @date: 2023-11-12
  */
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MarsUserDetailsService userDetailsService;
+
+    private final MarsPersistentTokenRepository persistentTokenRepository;
+
+    private final MarsAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -49,6 +51,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password") //待提交密码的input值
                 .successForwardUrl("/")  //登录成功之后跳转的路径
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationSuccessHandler)
+                .and().logout().logoutUrl("/logout").logoutSuccessHandler(authenticationSuccessHandler)//自定义退出处理
                 .and().authorizeRequests().antMatchers("/toLoginPage").permitAll().anyRequest().authenticated();
 
         //关闭csrf防护
@@ -61,9 +66,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //开启记住我功能,设置过期时间,默认是两周,自定义表单input值
         http.rememberMe().tokenValiditySeconds(1209600).rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository);
     }
-
-    @Autowired
-    private MarsPersistentTokenRepository persistentTokenRepository;
 
 }
 
