@@ -4,14 +4,13 @@ import cn.hutool.cache.impl.LRUCache;
 
 /**
  * <p>
- *
+ *  模拟Redis
  * </p>
  *
  * @author: 韩福贵
  * @date: 2023-11-15
  */
 public class ValidateCodeCache {
-
     /**
      * LRU缓存
      */

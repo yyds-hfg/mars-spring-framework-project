@@ -3,12 +3,15 @@ package com.hacker.mars.common.config;
 import com.hacker.mars.common.security.MarsAuthenticationHandler;
 import com.hacker.mars.common.security.MarsPersistentTokenRepository;
 import com.hacker.mars.common.security.MarsUserDetailsService;
+import com.hacker.mars.common.security.filter.ValidateCodeFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -28,6 +31,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MarsAuthenticationHandler authenticationSuccessHandler;
 
+    private final ValidateCodeFilter validateCodeFilter;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
@@ -36,7 +41,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         //忽略静态资源被拦截的问题
-        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**","/code/**");
     }
 
     @Override
@@ -65,6 +70,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //简单token记住我功能
         //开启记住我功能,设置过期时间,默认是两周,自定义表单input值
         http.rememberMe().tokenValiditySeconds(1209600).rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository);
+
+        //加在用户名密码过滤器的前面
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 }
