@@ -55,7 +55,8 @@
                         </div>
                     </div>
                     <div style="padding:30px;">
-                        <input type="button" class="button button-block bg-main text-big input-big" value="登录">
+                        <input type="button" onclick="login()"
+                               class="button button-block bg-main text-big input-big" value="登录">
                     </div>
                 </div>
             </form>
@@ -63,8 +64,6 @@
     </div>
 </div>
 </body>
-</html>
-
 <script>
     function login() {
         $.ajax({
@@ -83,3 +82,4 @@
         });
     }
 </script>
+</html>
