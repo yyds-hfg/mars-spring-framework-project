@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -16,8 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Api(value = "用户操作")
 @Controller
 public class LoginApi {
-
-
+    
     @RequestMapping("/toLoginPage")
     @ApiOperation(value = "登录接口",notes = "页面登录用")
     public String toLoginPage() {

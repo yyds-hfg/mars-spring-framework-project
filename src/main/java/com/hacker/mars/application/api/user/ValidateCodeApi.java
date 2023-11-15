@@ -1,11 +1,10 @@
 package com.hacker.mars.application.api.user;
 
+import com.hacker.mars.common.security.ValidateCodeCache;
 import com.hacker.mars.domain.user.entity.ImageCode;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +12,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -28,12 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class ValidateCodeApi {
 
 
-    public final static String REDIS_KEY_IMAGE_CODE = "REDIS_KEY_IMAGE_CODE";
-    public final static int expireIn = 60;  // 验证码有效时间 60s
-
     //使用sessionStrategy将生成的验证码对象存储到Session中，并通过IO流将生成的图片输出到登录页面上。
-    @Resource
-    public StringRedisTemplate stringRedisTemplate;
 
     @RequestMapping("/image")
     public void createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -42,8 +35,7 @@ public class ValidateCodeApi {
         //生成验证码对象
         ImageCode imageCode = createImageCode();
         //生成的验证码对象存储到redis中 KEY为REDIS_KEY_IMAGE_CODE+IP地址
-        stringRedisTemplate.boundValueOps(REDIS_KEY_IMAGE_CODE + "-" + remoteAddr)
-                .set(imageCode.getCode(), expireIn, TimeUnit.SECONDS);
+        ValidateCodeCache.set(ValidateCodeCache.IMAGE_CODE_KEY + "-" + remoteAddr, imageCode.getCode());
         //通过IO流将生成的图片输出到登录页面上
         ImageIO.write(imageCode.getImage(), "jpeg", response.getOutputStream());
     }
@@ -51,7 +43,7 @@ public class ValidateCodeApi {
     /**
      * 用于生成验证码对象
      *
-     * @return 验证码对象
+     * @return ImageCode
      */
     private ImageCode createImageCode() {
 
@@ -93,9 +85,9 @@ public class ValidateCodeApi {
     /**
      * 获取随机演示
      *
-     * @param fc fc
-     * @param bc bc
-     * @return Color
+     * @param fc
+     * @param bc
+     * @return
      */
     private Color getRandColor(int fc, int bc) {
         Random random = new Random();

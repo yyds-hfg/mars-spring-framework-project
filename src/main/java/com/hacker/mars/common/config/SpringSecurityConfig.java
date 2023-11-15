@@ -1,6 +1,6 @@
 package com.hacker.mars.common.config;
 
-import com.hacker.mars.common.security.MarsAuthenticationSuccessHandler;
+import com.hacker.mars.common.security.MarsAuthenticationHandler;
 import com.hacker.mars.common.security.MarsPersistentTokenRepository;
 import com.hacker.mars.common.security.MarsUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MarsPersistentTokenRepository persistentTokenRepository;
 
-    private final MarsAuthenticationSuccessHandler authenticationSuccessHandler;
+    private final MarsAuthenticationHandler authenticationSuccessHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
