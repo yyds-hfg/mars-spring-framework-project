@@ -41,7 +41,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         //忽略静态资源被拦截的问题
-        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**","/code/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/code/**");
     }
 
     @Override
@@ -73,6 +73,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //加在用户名密码过滤器的前面
         http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class);
+
+        //设置session管理
+        http.sessionManagement().invalidSessionUrl("/toLoginPage").maximumSessions(1).expiredUrl("/toLoginPage");
+        // session无效后跳转的路径, 默认是登录页面
+        //设置session最大会话数量 ,1同一时间只能有一个用户登录
+        //设置session过期后跳转路径
+
     }
 
 }

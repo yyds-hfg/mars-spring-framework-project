@@ -10,11 +10,11 @@ import cn.hutool.cache.impl.LRUCache;
  * @author: 韩福贵
  * @date: 2023-11-15
  */
-public class ValidateCodeCache {
+public class RedisCodeCache {
     /**
      * LRU缓存
      */
-    private final static LRUCache<String, String> cache = new LRUCache<>(10);
+    private final static LRUCache<String, String> REDIS_CACHE = new LRUCache<>(10);
 
     /**
      * 验证码KEY
@@ -28,7 +28,7 @@ public class ValidateCodeCache {
      * @return 值
      */
     public static String get(String key) {
-        return cache.get(key);
+        return REDIS_CACHE.get(key);
     }
 
     /**
@@ -38,7 +38,7 @@ public class ValidateCodeCache {
      * @param code 值
      */
     public static void set(String key, String code) {
-        cache.put(key, code, 60000);
+        REDIS_CACHE.put(key, code, 60000);
     }
 
     /**
@@ -47,7 +47,7 @@ public class ValidateCodeCache {
      * @param key 键
      */
     public static void remove(String key) {
-        cache.remove(key);
+        REDIS_CACHE.remove(key);
     }
 
 }

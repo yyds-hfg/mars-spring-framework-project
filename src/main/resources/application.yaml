@@ -1,6 +1,8 @@
 server:
   port: 8080
-
+  servlet:
+    session:
+      timeout: 60 #配置session超时时间
 spring:
   application:
     name: mars-application
@@ -47,3 +49,4 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.knife4j.demo.new3
+

@@ -2,7 +2,7 @@ package com.hacker.mars.common.security.filter;
 
 import com.hacker.mars.common.exception.ValidateCodeException;
 import com.hacker.mars.common.security.MarsAuthenticationHandler;
-import com.hacker.mars.common.security.ValidateCodeCache;
+import com.hacker.mars.common.security.RedisCodeCache;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -49,9 +49,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         //获取ip
         String remoteAddr = request.getRemoteAddr();
         //拼接缓存的key
-        String redisKey = ValidateCodeCache.IMAGE_CODE_KEY + remoteAddr;
+        String redisKey = RedisCodeCache.IMAGE_CODE_KEY + remoteAddr;
         //从本地缓存中获取imageCode
-        String imageCodeCache = ValidateCodeCache.get(redisKey);
+        String imageCodeCache = RedisCodeCache.get(redisKey);
         String imageCode = request.getParameter("imageCode");
         if (!StringUtils.hasText(imageCode)) {
             throw new ValidateCodeException("验证码的值不能为空！");
@@ -62,8 +62,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         if (!imageCodeCache.equals(imageCode)) {
             throw new ValidateCodeException("验证码不正确！");
         }
-        // 从redis中删除imageCode
-        ValidateCodeCache.remove(redisKey);
+        //从redis中删除imageCode
+        RedisCodeCache.remove(redisKey);
     }
 
 }

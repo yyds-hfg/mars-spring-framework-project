@@ -1,6 +1,6 @@
 package com.hacker.mars.application.api.user;
 
-import com.hacker.mars.common.security.ValidateCodeCache;
+import com.hacker.mars.common.security.RedisCodeCache;
 import com.hacker.mars.domain.user.entity.ImageCode;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +35,7 @@ public class ValidateCodeApi {
         //生成验证码对象
         ImageCode imageCode = createImageCode();
         //生成的验证码对象存储到redis中 KEY为REDIS_KEY_IMAGE_CODE+IP地址
-        ValidateCodeCache.set(ValidateCodeCache.IMAGE_CODE_KEY + remoteAddr, imageCode.getCode());
+        RedisCodeCache.set(RedisCodeCache.IMAGE_CODE_KEY + remoteAddr, imageCode.getCode());
         //通过IO流将生成的图片输出到登录页面上
         ImageIO.write(imageCode.getImage(), "jpeg", response.getOutputStream());
     }
