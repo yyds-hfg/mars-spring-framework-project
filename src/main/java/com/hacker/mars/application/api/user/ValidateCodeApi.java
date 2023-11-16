@@ -85,9 +85,9 @@ public class ValidateCodeApi {
     /**
      * 获取随机演示
      *
-     * @param fc
-     * @param bc
-     * @return
+     * @param fc fc
+     * @param bc bc
+     * @return Color
      */
     private Color getRandColor(int fc, int bc) {
         Random random = new Random();

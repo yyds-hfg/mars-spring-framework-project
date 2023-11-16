@@ -5,13 +5,16 @@ import com.hacker.mars.common.security.MarsPersistentTokenRepository;
 import com.hacker.mars.common.security.MarsUserDetailsService;
 import com.hacker.mars.common.security.filter.ValidateCodeFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * <p>
@@ -32,6 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MarsAuthenticationHandler authenticationSuccessHandler;
 
     private final ValidateCodeFilter validateCodeFilter;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -62,7 +66,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().antMatchers("/toLoginPage").permitAll().anyRequest().authenticated();
 
         //关闭csrf防护
-        http.csrf().disable();
+//        http.csrf().disable();
 
         // 加载同源域名下的iframe页面,允许iframe加载页面
         http.headers().frameOptions().sameOrigin();
@@ -80,6 +84,30 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //设置session最大会话数量 ,1同一时间只能有一个用户登录
         //设置session过期后跳转路径
 
+        http.cors().configurationSource(corsConfigurationSource());
+    }
+
+
+    /**
+     * 配置跨域配置信息源
+     *
+     * @return CorsConfigurationSource
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        // 设置允许跨域的站点
+        corsConfiguration.addAllowedOrigin("*");
+        // 设置允许跨域的http方法
+        corsConfiguration.addAllowedMethod("*");
+        // 设置允许跨域的请求头
+        corsConfiguration.addAllowedHeader("*");
+        // 允许带凭证
+        corsConfiguration.setAllowCredentials(true);
+        // 对所有的url生效
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 
 }
