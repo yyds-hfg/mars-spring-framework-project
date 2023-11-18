@@ -5,6 +5,7 @@ import com.hacker.mars.infrastructure.persistent.po.TUserPo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,7 +36,12 @@ public class MarsUserDetailsService implements UserDetailsService {
         if (userPo == null) {
             throw new UsernameNotFoundException("用户没有找到.");
         }
-        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        if ("admin".equalsIgnoreCase(username)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            authorities.add(new SimpleGrantedAuthority("ROLE_PRODUCT"));
+        }
         //"{noop}" 不使用密码加密
         //框架会把前端传过来的密码与当前的密码进行比对
         //用户是否启用,用户是否过期,用户凭证是否过期,用户是否锁定

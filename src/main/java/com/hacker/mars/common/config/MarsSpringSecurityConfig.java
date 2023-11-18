@@ -4,10 +4,12 @@ import com.hacker.mars.common.security.MarsAuthenticationHandler;
 import com.hacker.mars.common.security.MarsPersistentTokenRepository;
 import com.hacker.mars.common.security.MarsUserDetailsService;
 import com.hacker.mars.common.security.filter.ValidateCodeFilter;
+import com.hacker.mars.common.security.handler.MarsAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,7 +28,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  */
 @Configuration
 @RequiredArgsConstructor
-public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableGlobalMethodSecurity(prePostEnabled = true)  //开启注解支持
+public class MarsSpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MarsUserDetailsService userDetailsService;
 
@@ -35,6 +38,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MarsAuthenticationHandler authenticationSuccessHandler;
 
     private final ValidateCodeFilter validateCodeFilter;
+
+    private final MarsAccessDeniedHandler accessDeniedHandler;
 
 
     @Override
@@ -53,6 +58,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //开启HttpBasic认证, 所有的请求都需要认证才可以访问
         //http.httpBasic().and().authorizeRequests().anyRequest().authenticated();
         //这种把用户名,密码通过md5加密然后进行传输,生成不建议使用
+        //严格区分大小写
+       /* http.authorizeRequests().antMatchers("/user/**").hasRole("ADMIN");
+        http.authorizeRequests().antMatchers("/product/**").access("hasAnyRole('ADMIN,PRODUCT') and hasIpAddress('127.0.0.1')");
+        */
 
         http.formLogin() //开启表单验证
                 .loginPage("/toLoginPage")  //LoginController的方法 自定义登录页面
@@ -85,6 +94,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //设置session过期后跳转路径
 
         http.cors().configurationSource(corsConfigurationSource());
+
+        //设置权限不足处理类
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
 
 
