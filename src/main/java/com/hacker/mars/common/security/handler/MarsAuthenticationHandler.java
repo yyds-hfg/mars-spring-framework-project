@@ -1,4 +1,4 @@
-package com.hacker.mars.common.security;
+package com.hacker.mars.common.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

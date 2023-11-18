@@ -1,7 +1,7 @@
 package com.hacker.mars.common.security.filter;
 
 import com.hacker.mars.common.exception.ValidateCodeException;
-import com.hacker.mars.common.security.MarsAuthenticationHandler;
+import com.hacker.mars.common.security.handler.MarsAuthenticationHandler;
 import com.hacker.mars.common.security.RedisCodeCache;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

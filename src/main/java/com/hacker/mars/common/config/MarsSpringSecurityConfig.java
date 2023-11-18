@@ -1,6 +1,6 @@
 package com.hacker.mars.common.config;
 
-import com.hacker.mars.common.security.MarsAuthenticationHandler;
+import com.hacker.mars.common.security.handler.MarsAuthenticationHandler;
 import com.hacker.mars.common.security.MarsPersistentTokenRepository;
 import com.hacker.mars.common.security.MarsUserDetailsService;
 import com.hacker.mars.common.security.filter.ValidateCodeFilter;
@@ -41,7 +41,6 @@ public class MarsSpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MarsAccessDeniedHandler accessDeniedHandler;
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
@@ -61,7 +60,11 @@ public class MarsSpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //严格区分大小写
        /* http.authorizeRequests().antMatchers("/user/**").hasRole("ADMIN");
         http.authorizeRequests().antMatchers("/product/**").access("hasAnyRole('ADMIN,PRODUCT') and hasIpAddress('127.0.0.1')");
-        */
+        **/
+
+
+        http.authorizeRequests().antMatchers("/user/**")
+                .access("@marsAuthorizationService.check(authentication,request)");
 
         http.formLogin() //开启表单验证
                 .loginPage("/toLoginPage")  //LoginController的方法 自定义登录页面

@@ -2,6 +2,7 @@ package com.hacker.mars.application.api.user;
 
 import com.hacker.mars.infrastructure.persistent.mapper.TUserMapper;
 import com.hacker.mars.infrastructure.persistent.po.TUserPo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +35,7 @@ public class UserApi {
      * @return 所有用户
      */
     @RequestMapping("/findAll")
+    @PreAuthorize("hasRole('ADMIN')")
     public String findAll(Model model) {
         List<TUserPo> userList = userMapper.selectList(null);
         model.addAttribute("userList", userList);
@@ -57,6 +59,7 @@ public class UserApi {
      * @return 页面跳转路径
      */
     @RequestMapping("/update/{id}")
+    @PreAuthorize("#id >=3")
     public String update(@PathVariable Integer id, Model model) {
         TUserPo user = userMapper.selectById(id);
         model.addAttribute("user", user);
