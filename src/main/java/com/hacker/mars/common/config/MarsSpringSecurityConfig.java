@@ -74,11 +74,11 @@ public class MarsSpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successForwardUrl("/")  //登录成功之后跳转的路径
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationSuccessHandler)
-                .and().logout().logoutUrl("/logout").logoutSuccessHandler(authenticationSuccessHandler)//自定义退出处理
+                .and().logout().clearAuthentication(true).logoutUrl("/logout").logoutSuccessHandler(authenticationSuccessHandler)//自定义退出处理
                 .and().authorizeRequests().antMatchers("/toLoginPage").permitAll().anyRequest().authenticated();
 
         //关闭csrf防护
-//        http.csrf().disable();
+        //http.csrf().disable();
 
         // 加载同源域名下的iframe页面,允许iframe加载页面
         http.headers().frameOptions().sameOrigin();

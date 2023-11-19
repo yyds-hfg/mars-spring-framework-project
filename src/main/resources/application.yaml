@@ -30,6 +30,17 @@ spring:
 #      name: user   #设置SpringSecurity框架的默认密码
 #      password: user
 #      roles: ADMIN
+logging:
+  level:
+    root: info
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: on  #开启下划线转驼峰
+    aggressive-lazy-loading: on
+  type-aliases-package: com.hacker.mars.infrastructure.persistent.po
+
 
 knife4j:
   enable: true

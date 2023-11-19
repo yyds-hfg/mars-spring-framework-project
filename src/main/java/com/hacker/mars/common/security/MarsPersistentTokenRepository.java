@@ -42,12 +42,13 @@ public class MarsPersistentTokenRepository implements PersistentTokenRepository 
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
         try {
+
             List<PersistentLoginsPo> list = persistentLoginsMapper.tokensBySeries(seriesId);
             if (list.size()>1) {
                 log.info("Querying token for series '{}' returned more than one value. Series" + " should be unique", seriesId);
                 return null;
             }
-            if (list.size() == 0) {
+            if (list.isEmpty()) {
                 log.info("Querying token for series '{}' returned no results.", seriesId);
                 return null;
             }

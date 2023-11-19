@@ -3,6 +3,7 @@ package com.hacker.mars.application.api.user;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,11 @@ public class LoginApi {
     @ApiOperation(value = "登录成功之后跳转使用",notes = "页面登录使用")
     public String index() {
         return "index";
+    }
+
+    @PostMapping("/logout")
+    public void logout() {
+        System.out.println();
     }
 
 }
